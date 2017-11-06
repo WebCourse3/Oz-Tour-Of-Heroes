@@ -10,7 +10,8 @@ app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
 	extended: true
 }));
 
-
+var heroesRec = require('./heroes');
+var heroes = new heroesRec.Heroes();
 
 
 app.get('/', function(req, res){
@@ -20,49 +21,52 @@ app.get('/', function(req, res){
 app.route('/heroes')
 	.get( function (req, res)
 	{
-		res.send(heroes);
+		res.send(heroes.getHeroes());
 	})
 	.post( function (req, res)
 	{
-		var name = req.body.name;
-		var id =  req.body.id;
-		var searchHero = heroes.find(element => element.id == req.body.id);
+		const name = req.body.name;
+		const id =  req.body.id;
 
-		if(id == null)
+		if(id === null)
 		{
 			res.send("please send id parameter");
 		}
-		else if(searchHero == null) {
-
-			var newHero = {id: id, name: name};
-			heroes.push(newHero);
-			res.send(heroes);
-		}
 		else
 		{
-			res.send("there is hero with this id");
+			const getHero = heroes.getHeroById(id);
+			if(!getHero)
+			{
+				const newHero = {id: id, name: name};
+				heroes.addHero(newHero);
+				res.send(heroes);
+			}
+			else
+			{
+				res.send("there is hero with this id");
+			}
 		}
+
 	})
 	.delete ( function (req, res)
 	{
-		var id =  req.query.id;
-		var heroesCount = heroes.length;
+		const id =  req.query.id;
+		const heroesCount = heroes.length;
 
-		if(id == null)
+		if(id === null)
 		{
 			res.send("please send id parameter");
 		}
 		else
 		{
-			heroes = heroes.filter(element => element.id != id);
-
-			if(heroesCount == heroes.length)
+			heroes.deleteHeroById(id);
+			if(heroesCount === heroes.length)
 			{
 				res.send("there is not hero with same id");
 			}
 			else
 			{
-				res.send(heroes);
+				res.send(heroes.getHeroes());
 			}
 		}
 	});
@@ -70,9 +74,9 @@ app.route('/heroes')
 app.route('/heroes/:id')
 	.get( function (req, res)
 	{
-		var hero = heroes.find(element => element.id == req.params.id);
+		const hero = heroes.deleteHeroById(req.params.id);
 
-		if(hero != null)
+		if(hero)
 		{
 			res.send(hero);
 		}
@@ -83,28 +87,50 @@ app.route('/heroes/:id')
 	})
 	.delete( function (req, res)
 	{
-		heroes = heroes.filter(element => element.id != req.params.id);
-		res.send(heroes);
+
+		const id =  req.params.id;
+		const heroesCount = heroes.length;
+
+		if(id === null)
+		{
+			res.send("please send id parameter");
+		}
+		else
+		{
+			heroes.deleteHeroById(id);
+			if(heroesCount === heroes.length)
+			{
+				res.send("there is not hero with same id");
+			}
+			else
+			{
+				res.send(heroes.getHeroes());
+			}
+		}
 	})
 	.put( function (req, res)
 	{
-		var name = req.query.name;
-		heroes.forEach(function(element)
+		const name = req.query.name;
+		const id = req.params.id;
+
+		if(id === null  || name === null)
 		{
-			if(element.id == req.params.id)
-			{
-				element.name = name;
-				return;
-			}
-		});
-
-		res.send(heroes);
-
+			res.send("please send id,name parameter");
+		}
+		else
+		{
+			heroes.updateHeroName(id,name);
+			res.send(heroes.getHeroes());
+		}
 	});
 
-
-
-
-http.listen(3000, function(){
+const httpServer = http.listen(3000, function(){
 	console.log('listening on *:3000');
 });
+
+module.exports = {
+	httpServer:httpServer,
+	setHeroes : (heroesObject)=>{
+		heroes = heroesObject;
+	}
+}

@@ -1,5 +1,5 @@
 
-	var heroes = [
+const heroes = [
 		{id: 0, name: 'Zero'},
 		{id: 2, name: 'Mr. Nice'},
 		{id: 3, name: 'Narco'},
@@ -14,4 +14,19 @@
 	];
 
 
-module.exports = heroes;
+
+	// const heroes = [
+	// 		{0 : 'Zero'},
+	// 		{2 : 'Mr. Nice'},
+	// 		{3 : 'Narco'},
+	// 		{4 : 'Bombasto'},
+	// 		{5 : 'Celeritas'},
+	// 		{6 : 'Magneta'},
+	// 		{7 : 'RubberMan'},
+	// 		{8 : 'Dynama'},
+	// 		{9 : 'Dr IQ'},
+	// 		{10 : 'Magma'},
+	// 		{11 : 'Tornado'}
+	// 	];
+
+module.exports.heroes = heroes;
