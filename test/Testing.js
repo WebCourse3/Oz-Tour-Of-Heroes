@@ -127,7 +127,7 @@ describe('Heroes', function()
 
 	describe('GET hero', function () {
 		it('should get hero by id', function (done) {
-			const heroes = [{id: 5, name: 'Celeritas'},{id: 5, name: 'Celeritas'}];
+			const heroes = [];
 			let idHero = 5;
 			heroes.getHeroById = sinon.stub();
 			server.setHeroes(heroes);
@@ -136,7 +136,6 @@ describe('Heroes', function()
 				.query({id: idHero})
 				.end(function (err, res) {
 					res.should.have.status(200);
-					res.body.should.be.a('array');
 					heroes.getHeroById.callCount.should.equal(1);
 					done();
 				});
