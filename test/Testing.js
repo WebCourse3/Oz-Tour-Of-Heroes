@@ -62,12 +62,12 @@ describe('Heroes', function()
 	{
 		it('should update hero name ', function()
 		{
-			heroes.heroesDB = [{id:15,name:"lol"},{id:11,name:"df"}];
 			const heroes = new heroesClass.Heroes();
-			const heroBeforeUpdate = heroes.getHeroById(5);
-			let hero = {id:5,name:"lol"};
+			heroes.heroesDB = [{id:15,name:"lol"},{id:11,name:"df"}];
+			const heroBeforeUpdate = heroes.heroesDB.find(element => element.id ===15);
+			let hero = {id:15,name:"lol"};
 			heroes.updateHeroName(hero);
-			const heroAfterUpdate = heroes.getHeroById(5);
+			const heroAfterUpdate = heroes.heroesDB.find(element => element.id ===15);
 			assert.equal(heroAfterUpdate,heroBeforeUpdate);
 		});
 	});
@@ -113,6 +113,7 @@ describe('Heroes', function()
 				});
 		});
 	});
+
 
 });
 
