@@ -72,20 +72,18 @@ describe('Heroes', function()
 		});
 	});
 
-	describe('GET', function () {
+	describe('GET all heroes', function () {
 		it('should get all heroes', function (done) {
 			const heroes = {};
 			heroes.getHeroes = sinon.stub();
-			heroes.getHeroes.returns([{id: 4, name: 'Bombasto'},
-				{id: 5, name: 'Celeritas'},
-				{id: 6, name: 'Magneta'}]);
+			heroes.getHeroes.returns([{id: 4, name: 'Bombasto'}, {id: 5, name: 'Celeritas'}, {id: 6, name: 'Magneta'}]);
 			server.setHeroes(heroes);
 			chai.request(server.httpServer)
 				.get('/heroes')
 				.end(function (err, res) {
 					res.should.have.status(200);
 					res.body.should.be.a('array');
-					res.body.length.should.be(3);
+					res.body.length.should.be.equal(3);
 					done();
 				});
 		});
@@ -127,7 +125,7 @@ describe('Heroes', function()
 		});
 	});
 
-	describe('GET', function () {
+	describe('GET hero', function () {
 		it('should get hero by id', function (done) {
 			const heroes = [{id: 5, name: 'Celeritas'},{id: 5, name: 'Celeritas'}];
 			let idHero = 5;

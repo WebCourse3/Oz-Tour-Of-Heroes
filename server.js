@@ -74,7 +74,7 @@ app.route('/heroes')
 app.route('/heroes/:id')
 	.get( function (req, res)
 	{
-		const hero = heroes.deleteHeroById(req.params.id);
+		const hero = heroes.getHeroById(req.params.id);
 
 		if(hero)
 		{
