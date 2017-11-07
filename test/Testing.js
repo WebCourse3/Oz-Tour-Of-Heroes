@@ -105,10 +105,41 @@ describe('Heroes', function()
 				.end(function (err, res) {
 					res.should.have.status(200);
 					heroes.addHero.callCount.should.equal(1);
-					// res.body.should.be.a('json');
-					// res.body.id.should.have.equal('15');
-					// res.body.name.should.equal('oz');
-					//res.body.length.should.be(11);
+					done();
+				});
+		});
+	});
+
+	describe('delete', function () {
+		it('should delete hero', function (done) {
+			const heroes = {};
+			let idHero = 5;
+			heroes.deleteHeroById = sinon.spy();
+			server.setHeroes(heroes);
+			chai.request(server.httpServer)
+				.delete('/heroes')
+				.query({id: idHero})
+				.end(function (err, res) {
+					res.should.have.status(200);
+					heroes.deleteHeroById.callCount.should.equal(1);
+					done();
+				});
+		});
+	});
+
+	describe('GET', function () {
+		it('should get hero by id', function (done) {
+			const heroes = [{id: 5, name: 'Celeritas'},{id: 5, name: 'Celeritas'}];
+			let idHero = 5;
+			heroes.getHeroById = sinon.stub();
+			server.setHeroes(heroes);
+			chai.request(server.httpServer)
+				.get('/heroes/:id')
+				.query({id: idHero})
+				.end(function (err, res) {
+					res.should.have.status(200);
+					res.body.should.be.a('array');
+					heroes.getHeroById.callCount.should.equal(1);
 					done();
 				});
 		});
